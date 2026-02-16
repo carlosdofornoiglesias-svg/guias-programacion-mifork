@@ -5,49 +5,143 @@
 1. Abstracción
 La abstracción consiste en mostrar solo lo esencial de un objeto y ocultar los detalles internos que no son necesarios para su uso.
 En Java esto se logra con clases, interfaces y clases abstractas.
+2. Encapsulamiento
+El encapsulamiento protege los datos internos de un objeto restringiendo el acceso desde fuera de la clase.
+Se implementa usando modificadores de acceso (private, public, protected) y métodos getters/setters.
+3. Herencia
+La herencia permite que una clase (subclase) obtenga los atributos y métodos de otra clase (superclase).
+Favorece la reutilización del código.
+4. Polimorfismo
+El polimorfismo permite que un mismo método se comporte de diferentes maneras, según el objeto que lo utilice.
+En Java lo vemos en la sobrescritura y sobrecarga de métodos.
 
 
 ## 2. Cita cuatro lenguajes populares que permitan la programación orientada a objetos
 
-### Respuesta
+-Java – Un lenguaje totalmente orientado a objetos (excepto los tipos primitivos), muy usado en aplicaciones empresariales, Android y sistemas grandes.
+
+-Python – Lenguaje multiparadigma que soporta POO de forma sencilla y flexible. Permite crear clases, herencia, polimorfismo, etc.
+
+-C++ – Extensión de C que añade POO. Muy utilizado para sistemas de alto rendimiento, videojuegos y software de bajo nivel.
+
+-C# – Lenguaje de Microsoft orientado a objetos, clave en el ecosistema .NET para aplicaciones de escritorio, web y videojuegos (Unity).
 
 
 ## 3. Los paradigmas anteriores a la POO, ¿Qué es la **programación estructurada**? y, todavía mejor, ¿Qué es la **programación modular**?
 
-### Respuesta
+La programación estructurada es un paradigma que organiza el código usando estructuras de control claras, evitando los saltos incontrolados como goto.
+Su objetivo principal es hacer los programas más legibles, más fáciles de mantener y menos propensos a errores.
+Se basa en tres estructuras fundamentales:
+
+Secuencia → ejecutar instrucciones en orden.
+Selección → tomar decisiones (if, switch).
+Iteración → repetir acciones (for, while).
+
+La programación modular es un paso más allá de la estructuración: busca dividir el programa en partes independientes llamadas módulos.
+Cada módulo:
+
+Resuelve un problema específico,
+Tiene su propia responsabilidad,
+Puede ser desarrollado, probado y mantenido de forma independiente.
 
 ## 4. ¿Qué tres elementos definen a un objeto en programación orientada a objetos?
 
-### Respuesta
+1. Atributos (o propiedades)
+Son las características o datos que describen al objeto.
+Representan su estado en un momento dado.
+2. Métodos (o comportamientos)
+Son las acciones que el objeto puede realizar o las operaciones que puede ejecutar.
+Definen el comportamiento del objeto.
+3. Identidad
+Es lo que hace que cada objeto sea único, incluso si tiene los mismos atributos y comportamientos que otro.
+Es su lugar propio en memoria o su referencia interna.
 
 ## 5. ¿Qué es una clase? ¿Es lo mismo que un objeto? ¿Qué es una instancia? ¿Todos los lenguajes orientados a objetos manejan el concepto de clase?
 
-### Respuesta
+Una clase es un modelo, plantilla o molde a partir del cual se crean objetos. Pero por sí sola no ocupa memoria para datos, solo describe cómo serán los objetos que se creen a partir de ella. Y no, no es lo mismo que un objeto.
+
+Una clase es una definición, un “molde”, mientras que un objeto es una entidad real creada a partir de la clase, que sí tiene valores concretos en memoria.
+Una instancia es simplemente un objeto creado a partir de una clase.
+No todos los lenguajes orientados a objetos requieren clases. Existen dos grandes enfoques:
+
+-Lenguajes basados en clases (class-based OOP)
+Son los más comunes.
+Usan clases como plantilla para crear objetos.
+Ejemplos:
+
+Java, C++, C#, Python (aunque es flexible, sigue siendo class‑based) o Ruby.
+
+-Lenguajes basados en prototipos (prototype-based OOP)
+Estos no usan clases, sino que los objetos se crean a partir de otros objetos existentes llamados prototipos.
+Ejemplos:
+
+JavaScript, Self o Lua (en parte).
 
 
 ## 6. ¿Dónde se almacenan en memoria los objetos? ¿Es igual en todos los lenguajes? ¿Qué es la **recolección de basura**? 
 
-### Respuesta
-
+No todos los lenguajes almacenan los objetos igual, depende del lenguaje y del modelo de memoria.
+1. En lenguajes como Java, C#, Python (lenguajes con memoria gestionada)
+Los objetos se almacenan en el heap, que es un área de memoria grande, compartida y dinámica. Mientras que las variables que apuntan a los objetos (las referencias) se almacenan normalmente en la pila (stack).
+2. En lenguajes como C++ (memoria no gestionada)
+Un objeto puede almacenarse en:
+-Stack (pila), cuando se crea automáticamente.
+-Heap (montículo), cuando se usa new.
+Memoria estática, si es global o static.
+La recolección de basura (GC) es un proceso automático que se encarga de liberar la memoria de los objetos que ya no están en uso.
+Es decir:
+·Cuando un objeto ya no está referenciado por ninguna variable,
+·El recolector detecta que está “inaccesible”,
+·Libera su memoria automáticamente.
 
 ## 7. ¿Qué es un método? ¿Qué es la **sobrecarga de métodos**? 
 
-### Respuesta
+Un método es una función definida dentro de una clase y sirve para describir comportamientos o acciones que los objetos pueden realizar. La sobrecarga de métodos consiste en definir varios métodos con el mismo nombre pero con distinto número o tipo de parámetros.
 
 
 ## 8. Ejemplo mínimo de clase en Java, que se llame Punto, con dos atributos, x e y, con un método que se llame `calculaDistanciaAOrigen`, que calcule la distancia a la posición 0,0. Por sencillez, los atributos deben tener visibilidad por defecto. Crea además un ejemplo de uso con una instancia y uso del método
+class Punto {
+    int x;  
+    int y;  
 
-### Respuesta
+    double calculaDistanciaAOrigen() {
+        return Math.sqrt(x * x + y * y);
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        Punto p = new Punto();
+        p.x = 3;
+        p.y = 4;
+
+        double distancia = p.calculaDistanciaAOrigen();
+        System.out.println("Distancia al origen: " + distancia);
+    }
+}
 
 
 ## 9. ¿Cuál es el punto de entrada en un programa en Java? ¿Qué es `static` y para qué vale? ¿Sólo se emplea para ese método `main`? ¿Para qué se combina con `final`?
 
-### Respuesta
+El punto de entrada es el método: public static void main(String[] args). Java empieza a ejecutar tu programa aquí, siempre, y este método debe existir en alguna clase para que la JVM sepa qué ejecutar.
+Static significa que un atributo o método pertenece a la clase y no a las instancias. Un método static se puede usar sin crear un objeto, un atributo static es compartido por todas las instancias de la clase.
+static se usa para:
+-Métodos utilitarios. Ej.: Math.sqrt(), Integer.parseInt()
+-Atributos compartidos entre todos los objetos. Ej.: contador global, configuración común.
+-Bloques static (código que se ejecuta solo una vez al cargar la clase)
+Static final se suelen combinar para definir una constante, también pueden definir métodos, pero es bastante raro.
 
 ## 10. Intenta ejecutar un poco de Java de forma básica, con los comandos `javac` y `java`. ¿Cómo podemos compilar el programa y ejecutarlo desde linea de comandos? ¿Java es compilado? ¿Qué es la **máquina virtual**? ¿Qué es el *byte-code* y los ficheros `.class`?
 
-### Respuesta
+Para compilar se usa javac, el compilador de Java: javac Main.java . Para ejecutar se usa la JVM mediante el comando java:    java Main. Por tanto, Java es compilado y interpretado.
+La JVM (Java Virtual Machine) es un programa que, ejecuta el bytecode generado por javac, actúa como una capa intermedia entre tu programa y el sistema operativo y permite que el mismo .class funcione en Windows, Linux, macOS, etc.
+El bytecode es el código intermedio que genera el compilador de Java, es un lenguaje binario específico para la JVM.
+Son los archivos que contienen bytecode.
+Es decir:
+Main.java      (código fuente)
+   ↓ javac
+Main.class     (bytecode ejecutado por la JVM)
 
+Cada clase dentro de un archivo .java genera su propio .class.
 
 ## 11. En el código anterior de la clase `Punto` ¿Qué es `new`? ¿Qué es un **constructor**? Pon un ejemplo de constructor en una clase `Empleado` que tenga DNI, nombre y apellidos
 
