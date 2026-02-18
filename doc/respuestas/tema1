@@ -145,35 +145,124 @@ Cada clase dentro de un archivo .java genera su propio .class.
 
 ## 11. En el código anterior de la clase `Punto` ¿Qué es `new`? ¿Qué es un **constructor**? Pon un ejemplo de constructor en una clase `Empleado` que tenga DNI, nombre y apellidos
 
-### Respuesta
+New es una palabra reservada de java que sirve para crear objetos: Punto p = new Punto().
+Aquí pasan varias cosas: se reserva memoria para un nuevo objeto de tipo Punto (en el heap), se llama al constructor de la clase Punto, se obtiene una referencia al objeto recién creado y a esa referencia se asigna a la variable p.
+Un constructor es un método especial dentro de una clase que lleva el mismo nombre que la clase, no tiene tipo de retorno, ni siquiera void, se ejecuta automáticamente cuando creas un objeto con new.
+Sirve para inicializar los atributos de un objeto.
 
+class Empleado {
+    String dni;
+    String nombre;
+    String apellidos;
+
+    // Constructor
+    Empleado(String dni, String nombre, String apellidos) {
+        this.dni = dni;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+    }
+}
 
 ## 12. ¿Qué es la referencia `this`? ¿Se llama igual en todos los lenguajes? Pon un ejemplo del uso de `this` en la clase `Punto`
 
-### Respuesta
+This es una referencia al propio objeto actual dentro de una clase. Sirve para:
+-Acceder a atributos y métodos del objeto actual.
+-Diferenciar los parámetros del constructor cuando tienen el mismo nombre que los atributos.
 
+class Punto {
+    int x; 
+    int y;
+
+    // Constructor: diferenciamos de los atributos con this
+    Punto(int x, int y) {
+        this.x = x; // 'this.x' es el atributo; 'x' es el parámetro
+        this.y = y;
+    }
+
+    double calculaDistanciaAOrigen() {
+        return Math.sqrt(this.x * this.x + this.y * this.y); // 'this' es opcional aquí
+    }
+
+    // Distancia a otro punto
+    double distanciaA(Punto otro) {
+        int dx = this.x - otro.x; // 'this' indica que usamos el estado del objeto actual
+        int dy = this.y - otro.y;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    Punto mover(int dx, int dy) {
+        this.x += dx;
+        this.y += dy;
+        return this; // devolver el propio objeto
+    }
+}
 
 ## 13. Añade ahora otro nuevo método que se llame `distanciaA`, que reciba un `Punto` como parámetro y calcule la distancia entre `this` y el punto proporcionado
 
-### Respuesta
+
+double distanciaA(Punto otro) {
+        int dx = this.x - otro.x;
+        int dy = this.y - otro.y;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
 
 
 ## 14. El paso del `Punto` como parámetro a un método, es **por copia** o **por referencia**, es decir, si se cambia el valor de algún atributo del punto pasado como parámetro, dichos cambios afectan al objeto fuera del método? ¿Qué ocurre si en vez de un `Punto`, se recibiese un entero (`int`) y dicho entero se modificase dentro de la función? 
 
-### Respuesta
+Java SIEMPRE pasa los parámetros por valor, pero lo que se copia es diferente si el parámetro es:
+un primitivo → se copia el valor;
+un objeto → se copia la referencia al objeto.
+Si pasas un Punto a un método los cambios afectan al objeto original porque en java se copia la referencia y ambas variables apuntan al mismo objeto en el heap.
+Si pasas un int y lo modificas dentro del método, dichos cambios no afectarán fuera del método porque los tipos primitivos en Java se copian siempre por valor literal.
 
 
 ## 15. ¿Qué es el método `toString()` en Java? ¿Existe en otros lenguajes? Pon un ejemplo de `toString()` en la clase `Punto` en Java
 
-### Respuesta
+Es un método heredado de la clase base Object, sirve  para devolver una representación en texto del objeto y java a veces lo llama automáticamente(cuando imprimes un objeto con System.out.println(obj) o concatenas un objeto con una cadena: "El punto es: " + p por ejemplo)
+
+
+@Override
+    public String toString() {
+        return "Punto(" + x + ", " + y + ")";
+    }
 
 
 ## 16. Reflexiona: ¿una clase es como un `struct` en C? ¿Qué le falta al `struct` para ser como una clase y las variables de ese tipo ser instancias?
 
+Un struct en C y una clase comparten una idea básica: ambos agrupan datos en una sola unidad. Pero un struct en C no es una clase en el sentido orientado a objetos.A un struct en C le faltan tres cosas esenciales para poder considerarse equivalente a una clase orientada a objetos:
+1-Métodos dentro del propio tipo
+2-Constructores
+3-Instancias reales (objetos) con identidad
+En C:
+Un struct es un bloque de memoria, si copias un struct, se copia todo el contenido y no hay referencias automáticas, ni identidad del objeto.
 
-### Respuesta
+En Java o lenguajes OOP:
+Un objeto tiene identidad propia, dos objetos pueden tener los mismos datos pero no ser el mismo objeto y las variables de tipo clase son referencias, no datos completos.
 
 
 ## 17. Quitemos un poco de magia a todo esto: ¿Como se podría “emular”, con `struct` en C, la clase `Punto`, con su función para calcular la distancia al origen? ¿Qué ha pasado con `this`?
 
-### Respuesta
+En C, habría que separar los datos (struct) de las funciones que operan sobre ellos.
+
+#include <stdio.h>
+#include <math.h>
+
+struct Punto {
+    int x;
+    int y;
+};
+
+double calculaDistanciaAOrigen(struct Punto* this) {
+    return sqrt(this->x * this->x + this->y * this->y);
+}
+
+int main() {
+    struct Punto p = {3, 4};
+
+    double d = calculaDistanciaAOrigen(&p);
+
+    printf("Distancia al origen: %f\n", d);
+    return 0;
+}
+En java el this es automático, en cambio, en C no existe el this por lo que el programador debe pasar explícitamente un puntero al struct y ese &p es el “this” en C.
