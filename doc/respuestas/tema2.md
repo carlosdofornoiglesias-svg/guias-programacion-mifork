@@ -16,8 +16,8 @@ Por favor, escribe en impersonal las respuestas.
 
 ## 1. En Programación Orientada a Objetos (POO), ¿Qué buscan la **encapsulación** y **la ocultación** de información? Enumera brevemente algunas ventajas de la ocultación de información.
 
-Encapsulación: Es el principio por el cual los datos (estado) y las operaciones que trabajan con esos datos (métodos) se agrupan dentro de una misma unidad: la clase. Su objetivo es modelar objetos coherentes y controlados.
-Ocultación de información: Es la práctica de restringir el acceso directo al estado interno y a ciertos detalles de implementación, exponiendo solo lo esencial a través de una interfaz pública estable y segura.
+Encapsulación: Es el principio por el cual los datos (estado) y las operaciones que trabajan con esos datos (métodos) se agrupan dentro de una misma unidad, la clase. Su objetivo es modelar objetos coherentes y controlados. Añade protección a la clase que permite ocultar miembros al entrar a la clase.
+Ocultación de información: Es la práctica de restringir el acceso directo al estado interno y a ciertos detalles de implementación, exponiendo solo lo esencial a través de una interfaz pública segura.
 
 Ventajas de la ocultación de información:
 
@@ -200,8 +200,7 @@ Más variado: public, private, protected, internal, protected internal, private 
 
 ## 8. Responde: Los miembros de instancia privados de un objeto están ocultos para (a) otras clases o (b) otras instancias, aunque sean de la misma clase. Pon un ejemplo añadiendo un método `calcularDistanciaAPunto(Punto otro)` y explica la respuesta.
 
-Los miembros privados están ocultos para otras clases,
-pero NO están ocultos para otras instancias de la misma clase.
+Los miembros privados están ocultos para otras clases, pero no están ocultos para otras instancias de la misma clase.
 Eso significa que un objeto de la clase sí puede acceder a los atributos privados de otro objeto de la misma clase.
 public class Punto {
     private double x;
@@ -314,52 +313,144 @@ Control total del proceso de creación: evita inconsistencias y permite aplicar 
 
 ## 14. Como sería un método factoría dentro de la clase `Punto` para construir un `Punto` a partir de dos coordenadas, pero que las redondee al entero más cercano. Escribe sólo el código del método, no toda la clase ¿Has usado `static`? 
 
-### Respuesta
+public static Punto fromRounded(double x, double y) {
+    return new Punto(Math.round(x), Math.round(y));
+}
 
 
 ## 15. Cambia la implementación de `Punto`. En vez de dos `double`, emplea un array interno de dos posiciones, intentando no modificar la interfaz pública de la clase.
 
-### Respuesta
+public class Punto {
+    private final double[] coords = new double[2]; 
+    // coords[0] = x, coords[1] = y
+
+    public Punto(double x, double y) {
+        coords[0] = x;
+        coords[1] = y;
+    }
+
+    public double getX() { return coords[0]; }
+    public double getY() { return coords[1]; }
+
+    public void setX(double x) { coords[0] = x; }
+    public void setY(double y) { coords[1] = y; }
+
+    public double calcularDistanciaAOrigen() {
+        return Math.hypot(coords[0], coords[1]);
+    }
+}
 
 
 ## 16. Si un atributo va a tener un método "getter" y "setter" públicos, ¿no es mejor declararlo público? ¿Cuál es la convención más habitual sobre los atributos, que sean públicos o privados? ¿Tiene esto algo que ver con las "invariantes de clase"?
 
-### Respuesta
+No, no es mejor declararlo público.
+
+Un atributo público rompe la encapsulación, porque cualquiera puede modificarlo sin control.
+Con getter/setter puedes validar valores, proteger invariantes, registrar cambios y mantener compatibilidad futura.
 
 
 ## 17. ¿Qué significa que una clase sea **inmutable**? ¿qué es un método modificador? ¿Un método modificador es siempre un "setter"? ¿Tiene ventajas que una clase sea inmutable?
 
-### Respuesta
+-Clase inmutable:
+Una clase es inmutable si, una vez creada una instancia, su estado no cambia nunca. Ejemplo típico: String.
+-Método modificador
+Es cualquier método que cambia el estado interno del objeto. Incluye, pero no se limita a setters, métodos como mover(x, y), añadirElemento(...), etc.
 
+No todos los métodos modificadores son setters, pero todos los setters son modificadores. Ventajas de la inmutabilidad:
+
+Objetos fáciles de razonar, total seguridad frente a cambios inesperados, thread-safe sin necesidad de sincronización, facilitan cachés, hashCode constante, etc.
+Simplicidad en pruebas y depuración.
 
 ## 18. ¿Es recomendable incluir métodos "setter" siempre y como convención?
 
-### Respuesta
+No, poner setters siempre es un mal diseño porque muchas clases no deben cambiar después de construirse (fechas, puntos, identificadores…), los setters facilitan romper invariantes y aumentan el acoplamiento.
 
+Es más recomendable utilizar atributos privados y los setters solo cuando tengan sentido y sean necesarios para el modelo.
 
 ## 19. ¿La clase `String` en Java es mutable o inmutable? ¿Qué ocurre al concatenar dos cadenas? ¿Qué debemos hacer si vamos a hacer una operación que implique concatenar muchas veces para construir paso a paso una cadena muy larga?
 
-### Respuesta
-
+String es inmutable, una vez creada no se puede modificar.Al concatenar cadenas con operaciones como: a = a + "x" crea un objeto String nuevo, porque no se puede modificar el anterior y es costoso si se hace muvhas veces. Si vas a concatenar repetidamente, usa StringBuilder, ejemplo:
+StringBuilder sb = new StringBuilder();
+for (int i = 0; i < 1000; i++) {
+    sb.append("hola");
+}
+String resultado = sb.toString();
 
 ## 20. En POO ¿Cómo se comparan objetos de una misma clase? ¿Por su contenido o por su identidad? ¿Qué es el método equals en Java? ¿Qué hace por defecto? ¿Cómo se deben comparar dos cadenas en Java? 
 
-### Respuesta
-
+Por identidad, si son el mismo objeto en memoria → ==. Por contenido, si tienen los mismos valores → equals
+-Qué es equals?
+Un método heredado de Object que sirve para comparar contenido lógico.
+-Qué hace por defecto?
+equals de Object compara como ==. Es decir, identidad, no contenido.
+Por último, dos cadenas en Java se comparan con cadena1.equals(cadena2).
 
 ## 21. ¿Qué son las clases "wrapper" en un lenguaje de programación orientado a objetos? ¿Cómo se hace? ¿Es un proceso automático? ¿Qué ventajas tienen? ¿Todos los lenguajes orientados a objetos tienen tipos primitivos y necesitan wrappers? 
 
-### Respuesta
+Las clases wrapper son tipos de referencia que envuelven (representan) a los tipos primitivos para poder usarlos allí donde se requieren objetos.
+Primitivos → int, double, boolean, char, etc.
+Wrappers → Integer, Double, Boolean, Character, etc.
 
+Integer n = 5;      // int -> Integer
+int x = n;          // Integer -> int
+List<Integer> xs = List.of(1, 2, 3); // no se pueden usar primitivos en generics
+Algunas ventajas son que permiten usar valores primitivos en colecciones genéricas (List<Integer> en vez de List<int> que no existe). o proveen métodos utilitarios (p. ej., Integer.parseInt, Double.isNaN, comparadores, conversión a cadena).
+
+No todos los legunajes necesitan wrappers, depende del modelo del lenguaje:
+-Java, C#: tienen primitivos y objetos; usan wrappers (aunque C# tiene boxing/unboxing y tipos por valor).
+-Python, Ruby: todo es objeto, no hay primitivos “crudos” separados, por lo que el concepto de wrapper no es necesario en el mismo sentido.
+-C++: tiene tipos primitivos y clases; existen tipos “envoltorio” pero no estandarizados como en Java (además, plantillas/std::optional, etc.).
 
 ## 22. ¿En POO qué es un **tipo de dato enumerado**? ¿En Java, un tipo de dato enumerado es una clase? ¿Qué ventajas tienen en términos de encapsulación los enumerados en Java?
 
-### Respuesta
+Un enumerado es un tipo con un conjunto finito y cerrado de valores posibles, con identidad y semántica (por ejemplo, DIA, MES, COLOR) y en Java, es una clase especial
 
+Cada valor del enum es una instancia singleton de esa clase.
+Un enum puede tener atributos privados, constructores, métodos, interfaces implementadas. Puede también sobrescribir métodos como toString, equals, etc.
+
+Ventajas de encapsulación:
+Los posibles valores están controlados y acotados por el tipo, se pueden ocultar detalles con atributos private, se definen métodos de dominio directamente en el enum (mejor cohesión), se evitan valores inválidos (no hay enteros “sueltos” que representen mal un caso) y posibilitan seguridad de tipos y claridad semántica.
 
 ## 23. Crea un tipo enumerado en Java que se llame `Mes`, con doce posibles instancias y que además proporcione métodos para obtener cuántos días tiene ese mes, el ordinal de ese mes en el año (1-12), empleando atributos privados y constructores del tipo enumerado.
 
-### Respuesta
+public enum Mes {
+    ENERO(1, 31),
+    FEBRERO(2, 28),  
+    MARZO(3, 31),
+    ABRIL(4, 30),
+    MAYO(5, 31),
+    JUNIO(6, 30),
+    JULIO(7, 31),
+    AGOSTO(8, 31),
+    SEPTIEMBRE(9, 30),
+    OCTUBRE(10, 31),
+    NOVIEMBRE(11, 30),
+    DICIEMBRE(12, 31);
+
+    private final int ordinalAnual;   // 1..12
+    private final int diasNoBisiesto; // días en año no bisiesto
+
+    private Mes(int ordinalAnual, int diasNoBisiesto) {
+        this.ordinalAnual = ordinalAnual;
+        this.diasNoBisiesto = diasNoBisiesto;
+    }
+
+    /** Devuelve el numero del mes (1..12) */
+    public int getOrdinal() {
+        return ordinalAnual;
+    }
+
+    /** Días del mes en año no bisiesto. */
+    public int getDias() {
+        return diasNoBisiesto;
+    }
+
+    /** Días del mes en año bisiesto. */
+    public int getDias(boolean esBisiesto) {
+        if (this == FEBRERO && esBisiesto) return 29;
+        return diasNoBisiesto;
+    }
+}
 
 
 ## 24. Añade a la clase `Mes` del ejercicio anterior cuatro métodos para devolver si ese mes tiene algunos días de invierno, primavera, verano u otoño, indicando con un booleano el hemisferio (norte o sur, parámetro `enHemisferioNorte`). Es decir: `esDePrimavera(boolean esHemisferioNorte)`, `esDeVerano(boolean esHemisferioNorte)`, `esDeOtoño(boolean esHemisferioNorte)`, `esDeInvierno(boolean esHemisferioNorte)`
