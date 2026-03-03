@@ -455,4 +455,34 @@ public enum Mes {
 
 ## 24. Añade a la clase `Mes` del ejercicio anterior cuatro métodos para devolver si ese mes tiene algunos días de invierno, primavera, verano u otoño, indicando con un booleano el hemisferio (norte o sur, parámetro `enHemisferioNorte`). Es decir: `esDePrimavera(boolean esHemisferioNorte)`, `esDeVerano(boolean esHemisferioNorte)`, `esDeOtoño(boolean esHemisferioNorte)`, `esDeInvierno(boolean esHemisferioNorte)`
 
-### Respuesta
+public boolean esDeInvierno(boolean esHemisferioNorte) {
+    if (esHemisferioNorte) {
+        return this == DICIEMBRE || this == ENERO || this == FEBRERO;
+    } else {
+        return this == JUNIO || this == JULIO || this == AGOSTO;
+    }
+}
+
+public boolean esDePrimavera(boolean esHemisferioNorte) {
+    if (esHemisferioNorte) {
+        return this == MARZO || this == ABRIL || this == MAYO;
+    } else {
+        return this == SEPTIEMBRE || this == OCTUBRE || this == NOVIEMBRE;
+    }
+}
+
+public boolean esDeVerano(boolean esHemisferioNorte) {
+    if (esHemisferioNorte) {
+        return this == JUNIO || this == JULIO || this == AGOSTO;
+    } else {
+        return this == DICIEMBRE || this == ENERO || this == FEBRERO;
+    }
+}
+
+public boolean esDeOtoño(boolean esHemisferioNorte) {
+    if (esHemisferioNorte) {
+        return this == SEPTIEMBRE || this == OCTUBRE || this == NOVIEMBRE;
+    } else {
+        return this == MARZO || this == ABRIL || this == MAYO;
+    }
+}
