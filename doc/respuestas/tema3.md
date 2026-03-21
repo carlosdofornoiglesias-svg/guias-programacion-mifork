@@ -278,25 +278,81 @@ public static void main(String[] args) throws IOException {
 
 ## 13. Pon un ejemplo en Java de firma de método que incluya `throws`, de una función que abre un fichero pero que declara que no le interesa menejar la excepción de si el fichero no existe, sino que se propague hacia arriba. Eso sí, acuérdate del `finally`.
 
-### Respuesta
+public void abrirFichero(String ruta) throws FileNotFoundException {
+    FileInputStream fis = null;
+    try {
+        fis = new FileInputStream(ruta); // Puede lanzar FileNotFoundException
+    } finally {
+        // El finally siempre se ejecuta
+        if (fis != null) {
+            try {
+                fis.close();
+            } catch (IOException e) {
+                // Manejo opcional del cierre
+            }
+        }
+    }
+}
 
 
 ## 14. ¿Podemos poner en `throws` excepciones no controladas, como `RuntimeException`? ¿Debería el método llamador entonces poner `try-catch` en ese caso? ¿Qué sentido tendría?
 
-### Respuesta
+Sí, podemos poner excepciones no controladas en throws, pero no es obligatorio. Las excepciones no controladas (unchecked) no requieren try-catch ni declaración en throws. No debe poner try-catch. Incluso aunque se declare en throws, el llamador no está obligado. 
+¿Qué sentido tiene declararlas?
+Principalmente documentar la intención del método:
+Indicar que puede lanzar un error de programación (IllegalStateException, IllegalArgumentException, etc.), mejorar la claridad de la API... Pero no cambia su comportamiento.
 
 
 ## 15. ¿Cuándo se recomienda usar excepciones controladas, como `IOException`, y cuándo no controladas como `IllegalArgumentException`? ¿Existen en todos los lenguajes ambas opciones? En los que sólo existe una opción, ¿cuál es la más habitual?
 
-### Respuesta
+-Excepciones controladas (checked)
+Se usan cuando el error es esperable y forma parte del flujo normal del programa.
+El programador puede y debe recuperarse.
+
+Ejemplos:
+-IOException
+-SQLException
+Son típicas en Java.
+
+-Excepciones no controladas (unchecked)
+Se usan cuando el error representa fallos de programación, no situaciones recuperables.
+El programador no debería continuar sin corregir el código.
+
+Ejemplos:
+NullPointerException
+IllegalArgumentException
+
+En Java existen tanto las excepciones controladas como las no controladas, en cambio, en lenguajes como C++, C#, Python o JavaScript solo existen las no controladas. En caso de solo existir una las más habituales son las no controladas, es el enfoque moderno y más común porque evita la verbosidad de las controladas.
 
 
 ## 16. ¿Tiene sentido lanzar excepciones dentro del `catch`? ¿Se puede relanzar la misma excepción capturada? ¿Cuándo tendría sentido hacer esto último? Pon ejemplos de ambos casos.
 
-### Respuesta
+Lanzar otra excepción dentro del catch tiene sentido cuando queremos convertir una excepción de bajo nivel en una de alto nivel más significativa para el programa.
+try {
+    leerBD();
+} catch (SQLException e) {
+    throw new MiExcepcionAplicacion("Error accediendo a la base de datos", e);
+}
 
+Sí se puede relanzar la misma excepción capturada:
+try {
+    metodoPeligroso();
+} catch (IOException e) {
+    System.err.println("Log: ocurrió un error, lo relanzo");
+    throw e; // se relanza la MISMA excepción
+}
+Tendría sentido hacer esto cuando queremos registrar (log) la excepción pero dejar que otro nivel la maneje o cuando queremos añadir contexto (aunque en ese caso es más típico encapsularla).
 
 ## 17. ¿En qué consiste que una excepción sea la **"causa"** de otra excepción? Pon un ejemplo en Java, donde capturemos una excepción de bajo nivel y la encapsulemos en otra personalizada de alto nivel. Cuando una excepción sale por pantalla y tiene una causa, ¿se ve?
 
-### Respuesta
+Cuando una excepción A causa una excepción B, decimos que B tiene como causa a A. En Java esto se hace pasando la excepción original como segundo parámetro:
+try {
+    FileInputStream fis = new FileInputStream("datos.txt");
+} catch (FileNotFoundException e) {
+    throw new MiExcepcionDeNegocio("No se pudo cargar el archivo requerido", e);
+}
+-FileNotFoundException es la excepción causante.
+-MiExcepcionDeNegocio es la excepción envolvente de nivel superior.
 
+¿Se ve la causa en pantalla?
+Sí. Al imprimir el stack trace aparece la excepción, es decir, Java muestra automáticamente la causa.
