@@ -139,7 +139,7 @@ Son los archivos que contienen bytecode.
 Es decir:
 Main.java      (código fuente)
    ↓ javac
-Main.class     (bytecode ejecutado por la JVM)
+Main.class     (bytecode ejecutado por la JVM) 
 
 Cada clase dentro de un archivo .java genera su propio .class.
 
@@ -230,7 +230,7 @@ Es un método heredado de la clase base Object, sirve  para devolver una represe
 
 ## 16. Reflexiona: ¿una clase es como un `struct` en C? ¿Qué le falta al `struct` para ser como una clase y las variables de ese tipo ser instancias?
 
-Un struct en C y una clase comparten una idea básica: ambos agrupan datos en una sola unidad. Pero un struct en C no es una clase en el sentido orientado a objetos.A un struct en C le faltan tres cosas esenciales para poder considerarse equivalente a una clase orientada a objetos:
+Un struct en C y una clase comparten una idea básica: ambos agrupan datos en una sola unidad. Pero un struct en C no es una clase en el sentido orientado a objetos. A un struct en C le faltan tres cosas esenciales para poder considerarse equivalente a una clase orientada a objetos:
 1-Métodos dentro del propio tipo
 2-Constructores
 3-Instancias reales (objetos) con identidad

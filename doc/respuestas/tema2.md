@@ -316,7 +316,7 @@ Control total del proceso de creación: evita inconsistencias y permite aplicar 
 public static Punto fromRounded(double x, double y) {
     return new Punto(Math.round(x), Math.round(y));
 }
-
+Sí: he usado static, porque un método factoría no necesita una instancia previa para crear un objeto.
 
 ## 15. Cambia la implementación de `Punto`. En vez de dos `double`, emplea un array interno de dos posiciones, intentando no modificar la interfaz pública de la clase.
 
